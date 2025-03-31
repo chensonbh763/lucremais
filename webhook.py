@@ -9,19 +9,28 @@ sdk = mercadopago.SDK(ACCESS_TOKEN)
 @app.route("/webhook", methods=["POST"])
 def webhook():
     data = request.json
+
     if "action" in data and data["action"] == "payment.updated":
         payment_id = data["data"]["id"]
         payment = sdk.payment().get(payment_id)["response"]
 
-        if payment["status"] == "approved":
-            user_id = payment["payer"]["email"]
-            value = payment["transaction_amount"]
-            print(f"✅ Pagamento aprovado para {user_id}, valor: R$ {value}")
+        status = payment.get("status", "desconhecido")
+        value = payment.get("transaction_amount", 0.0)
+        payer_email = payment["payer"].get("email", "desconhecido")
+        payment_method = payment.get("payment_method_id", "desconhecido")
 
-            # Aqui você pode adicionar o saldo no bot
+        print(f"🔔 Webhook recebido!")
+        print(f"🆔 ID do Pagamento: {payment_id}")
+        print(f"💰 Valor: R$ {value}")
+        print(f"📧 Pagador: {payer_email}")
+        print(f"💳 Método de Pagamento: {payment_method}")
+        print(f"✅ Status: {status}")
+
+        if status == "approved":
+            print(f"🎉 Pagamento aprovado para {payer_email}, valor: R$ {value}")
+            # Aqui você pode adicionar saldo ao usuário no bot
 
     return jsonify({"status": "ok"}), 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
-
