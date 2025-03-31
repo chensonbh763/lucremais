@@ -1,0 +1,7 @@
+python-telegram-bot==20.3     # Biblioteca para integração com o Telegram
+Flask==2.2.3                  # Para construir APIs (se necessário)
+mercadopago==2.1.0            # Integração com pagamentos Mercado Pago
+email-validator==1.2.1        # Para validação de endereços de e-mail
+validators==0.20.0            # Para validar URLs, e-mails etc.
+requests==2.28.2              # Para requisições HTTP (notificações e APIs)
+notifiers==1.2.0              # Para enviar notificações via SMS, Slack, etc.
